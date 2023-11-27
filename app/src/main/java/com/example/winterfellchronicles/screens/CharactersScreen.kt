@@ -44,7 +44,7 @@ import retrofit2.Response
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersScreen(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = "Winter-fell Chronicles") })
@@ -57,7 +57,7 @@ fun CharactersScreen(
         RetrofitInstance.api.getCharacters().enqueue(object : Callback<List<WinterFellResponse>> {
             override fun onResponse(
                 call: Call<List<WinterFellResponse>>,
-                response: Response<List<WinterFellResponse>>
+                response: Response<List<WinterFellResponse>>,
             ) {
                 Toast.makeText(context, "API call was successful", Toast.LENGTH_SHORT).show()
                 winterFellResponse = response.body()
@@ -65,9 +65,7 @@ fun CharactersScreen(
 
             override fun onFailure(call: Call<List<WinterFellResponse>>, t: Throwable) {
                 Toast.makeText(context, "API call failed", Toast.LENGTH_SHORT).show()
-
             }
-
         })
         if (!winterFellResponse.isNullOrEmpty()) {
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
@@ -81,13 +79,12 @@ fun CharactersScreen(
             CircularProgressIndicator()
         }
     }
-
 }
 
 @Composable
 fun CharactersCard(
     winterFellResponse: WinterFellResponse,
-    onClick: (id:Int) -> Unit
+    onClick: (id: Int) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -103,7 +100,7 @@ fun CharactersCard(
                 .fillMaxWidth()
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(text = winterFellResponse.fullName)
 
@@ -113,7 +110,7 @@ fun CharactersCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(55.dp)
-                    .clip(CircleShape)
+                    .clip(CircleShape),
             )
         }
     }
