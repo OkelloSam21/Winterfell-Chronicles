@@ -1,4 +1,4 @@
-package com.example.winterfellchronicles.screens
+package com.example.winterfellchronicles.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.winterfellchronicles.data.remote.RetrofitInstance
 import com.example.winterfellchronicles.data.remote.WinterFellResponse
-import com.example.winterfellchronicles.screens.destinations.CharacterInfoDestination
+import com.example.winterfellchronicles.screen.destinations.CharacterInfoDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

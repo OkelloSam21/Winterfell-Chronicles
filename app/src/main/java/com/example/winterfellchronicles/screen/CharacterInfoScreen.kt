@@ -1,4 +1,4 @@
-package com.example.winterfellchronicles.screens
+package com.example.winterfellchronicles.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
