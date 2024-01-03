@@ -2,11 +2,14 @@ package com.example.winterfellchronicles.data.remote
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface ApiService {
     @GET("/api/v2/Characters")
-    fun getCharacters(): Call<List<WinterFellResponse>>
+    suspend fun getCharacters(): List<WinterFellResponse>
 
     @GET("/api/v2/Characters/{id}")
-    fun getCharacterById(): Call<WinterFellResponse>
+    suspend fun getCharacterById(
+        @Path("id") id: Int,
+    ): List<WinterFellResponse>
 }
