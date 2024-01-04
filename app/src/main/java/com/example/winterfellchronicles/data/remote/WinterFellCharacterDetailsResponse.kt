@@ -18,5 +18,5 @@ data class WinterFellCharacterDetailsResponse(
     @SerializedName("lastName")
     val lastName: String,
     @SerializedName("title")
-    val title: String
+    val title: String,
 )
