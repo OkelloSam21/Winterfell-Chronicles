@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.winterfellchronicles"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.winterfellchronicles"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -89,4 +89,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
