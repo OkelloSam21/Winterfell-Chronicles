@@ -1,8 +1,12 @@
 package com.example.winterfellchronicles.screen.details
 
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.CircularProgressIndicator
@@ -15,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,7 +40,7 @@ fun CharacterInfo(
         viewModel.getCharactersInfo(id)
     }
 
-    val characterInfoUiState = viewModel.characterInfoUiState.collectAsState().value
+    val characterInfoUiState by viewModel.characterInfoUiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -56,32 +61,41 @@ fun CharacterInfo(
             )
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+        ) {
             if (characterInfoUiState.isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center),
                 )
             }
 
             if (!characterInfoUiState.isLoading &&
-                characterInfoUiState.error == null &&
-                characterInfoUiState.data != null
+                characterInfoUiState.error == null
             ) {
+                Log.d("info","CharacterInfoScreen: ${characterInfoUiState.data}")
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
                 ) {
                     AsyncImage(
-                        model = characterInfoUiState.data.image,
+                        model = characterInfoUiState.data?.imageUrl,
                         contentDescription = null,
+                        modifier = Modifier.size(40.dp,40.dp)
                     )
-                    Text(text = characterInfoUiState.data.fullName)
-                    Text(text = "Id : ${characterInfoUiState.data.id}")
-                    Text(text = "First Name : ${characterInfoUiState.data.firstName}")
-                    Text(text = "Last Name : ${characterInfoUiState.data.lastName}")
-                    Text(text = "Title : ${characterInfoUiState.data.title}")
-                    Text(text = "Family : ${characterInfoUiState.data.family}")
-                    Text(text = "Image : ${characterInfoUiState.data.image}")
-                    Text(text = "Image URL : ${characterInfoUiState.data.imageUrl}")
+                    characterInfoUiState.data?.let { Text(text = it.fullName) }
+                    Text(text = "Id : ${characterInfoUiState.data?.id}")
+                    Text(text = "First Name : ${characterInfoUiState.data?.firstName}")
+                    Text(text = "Last Name : ${characterInfoUiState.data?.lastName}")
+                    Text(text = "Title : ${characterInfoUiState.data?.title}")
+                    Text(text = "Family : ${characterInfoUiState.data?.family}")
+                    Text(text = "Image : ${characterInfoUiState.data?.image}")
+                    Text(text = "Image URL : ${characterInfoUiState.data?.imageUrl}")
                 }
             }
             if (
@@ -89,8 +103,9 @@ fun CharacterInfo(
                 characterInfoUiState.error != null
             ) {
                 Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = characterInfoUiState.error,
+                    modifier =
+                    Modifier.align(Alignment.Center),
+                    text = characterInfoUiState.error!!,
                 )
             }
         }

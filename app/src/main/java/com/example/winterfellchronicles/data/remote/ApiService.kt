@@ -10,5 +10,5 @@ interface ApiService {
     @GET("/api/v2/Characters/{id}")
     suspend fun getCharacterById(
         @Path("id") id: Int,
-    ): List<WinterFellResponse>
+    ): WinterFellCharacterDetailsResponse
 }

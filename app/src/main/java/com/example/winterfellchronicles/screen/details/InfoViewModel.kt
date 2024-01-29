@@ -1,8 +1,9 @@
 package com.example.winterfellchronicles.screen.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.winterfellchronicles.data.remote.WinterFellResponse
+import com.example.winterfellchronicles.data.remote.WinterFellCharacterDetailsResponse
 import com.example.winterfellchronicles.data.repository.WinterfellRepository
 import com.example.winterfellchronicles.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InfoViewModel @Inject constructor(
-    private val winterfellRepository: WinterfellRepository,
+    private val winterfellRepository: WinterfellRepository
 ) : ViewModel() {
+
     private val _characterInfoUiState = MutableStateFlow(CharacterInfoUiState())
     val characterInfoUiState = _characterInfoUiState.asStateFlow()
 
@@ -26,31 +28,34 @@ class InfoViewModel @Inject constructor(
                     isLoading = true,
                 )
             }
-            when (val result = winterfellRepository.getWinterfellCharactersDetails(id)) {
-                is Resource.Error -> {
+
+            when (val response = winterfellRepository.getWinterFellCharactersDetails(id)) {
+                is Resource.Success -> {
+                    Log.d("InfoViewModel", "getCharactersInfo: ${response.data}")
                     _characterInfoUiState.update {
                         it.copy(
                             isLoading = false,
-                            error = result.message,
+                            data = response.data,
+                            error = null
                         )
                     }
                 }
 
-                is Resource.Success -> {
+                is Resource.Error -> {
                     _characterInfoUiState.update {
                         it.copy(
                             isLoading = false,
-                            data = result.data?.firstOrNull(),
+                            error = response.message
                         )
                     }
                 }
             }
         }
     }
-
-    data class CharacterInfoUiState(
-        val isLoading: Boolean = false,
-        val error: String? = null,
-        val data: WinterFellResponse? = null,
-    )
 }
+data class CharacterInfoUiState(
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val data: WinterFellCharacterDetailsResponse? = null,
+)
+
